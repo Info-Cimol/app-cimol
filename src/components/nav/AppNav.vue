@@ -66,6 +66,8 @@
                 this.armarios();
               } else if (action === "turmas") {
                 this.turmas();
+              } else if (action === "biblioteca") {
+                this.biblioteca();
               } else if (action === "logout") {
                 this.logout();
               }
@@ -97,6 +99,9 @@
             patimonios() {
                 this.$router.push('/patrimonios');
             },
+            biblioteca() {
+                this.$router.push('/biblioteca');
+            },
             logout() {
                 this.$store.commit('setAuthToken', '');
                 this.$store.commit('setUserId', '');
@@ -111,16 +116,17 @@
       let perfil=this.$store.state.perfil;
       let itens=new Array();
       itens.push({ text: 'Home', icon: 'mdi-home',  action:'home', perfil:'admin, coordenador, professor,aluno, biblioteca'});
+      itens.push({ text: 'Biblioteca', icon: 'mdi-book',  action:'biblioteca', perfil:'admin, biblioteca'});
       if(perfil=='admin'){
         itens.push({ text: 'Alunos', icon: 'mdi-account-multiple' , action:'alunos'});
         itens.push({ text: 'Cursos', icon: 'mdi-school', action:'cursos'});
         itens.push({ text: 'Horarios', icon: 'mdi-border-all',  action:'horarios'});
         itens.push({ text: 'Turmas', icon: 'mdi-star', action:'turmas'});
-      }else if(perfil=='admin' || perfil=='coordenador' ){
+      }if(perfil=='admin' || perfil=='coordenador' ){
         itens.push({ text: 'Alunos', icon: 'mdi-account-multiple' , action:'alunos'});
         itens.push({ text: 'Armarios', icon: 'mdi-equal-box',  action:'armarios'});
         itens.push({ text: 'Patrimônios', icon: 'mdi-equal-box',  action:'patrimonios'});
-      }else if(perfil=='admin' || perfil=='coordenador' || perfil=='professor' || perfil=='aluno'){
+      }if(perfil=='admin' || perfil=='coordenador' || perfil=='professor' || perfil=='aluno'){
         itens.push({ text: 'Horarios', icon: 'mdi-border-all',  action:'horarios'});
       }
       itens.push({ text: 'Logout', icon: 'mdi-logout',  action:'logout', perfil:'admin, coordenador, professor,aluno, biblioteca'});
