@@ -5,11 +5,12 @@
         <v-container fluid>
             <v-row dense>
                 <v-col
+                
                 v-for="armario in armarios"
                 :key="armario.id_armario"
                 :color="armario.cor"
                 >
-                    <v-card color="armario.cor">
+                    <v-card :color="armario.cor" >
                         <v-card-title v-text="armario.numero"></v-card-title>
                         <v-card-actions>
                             <v-spacer></v-spacer>
@@ -42,9 +43,6 @@
             };
         },
         created() {
-            console.log(this.$route.params.id_curso);
-            let sql=`/curso/armarios/${this.$route.params.id_curso}`;
-            
             this.get(`/curso/armarios/${this.$route.params.id_curso}`).then((response)=>{
                 this.armarios = response.data;
             });

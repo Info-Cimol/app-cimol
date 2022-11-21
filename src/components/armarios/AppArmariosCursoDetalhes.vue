@@ -24,14 +24,15 @@
                             Dados do aluno
                             <p>{{armario.aluno.nome}}</p>
                         </div>
+                        
                         <v-card-actions>
                             <v-btn text v-if="armario.locado>0" @click="devolverArmario(armario.id_armario, armario.aluno.id_aluno)" >
                                 DEVOLVER
                             </v-btn>
-                            <v-btn text v-if="armario.locado===0">
-                                LOCAR
-                            </v-btn>
+                            
                         </v-card-actions>
+                        <app-armarios-form-locar :idCurso="idCurso" :idArmario="armario.id_armario" v-if="armario.locado===0"/>
+                        
 
                     </v-card>
                 </v-col>
@@ -45,21 +46,25 @@
     import api from '../api/api';
     import Loading from '../loading/Loading.vue';
     import BackButton from '../navigation/BackButton.vue';
+    import AppArmariosFormLocar from './AppArmariosFormLocar.vue';
+    
+
     export default {
         name: 'AppArmariosCursoDetalhes',
-        components: { Loading, BackButton},
+        components: { Loading, BackButton, AppArmariosFormLocar},
         mixins: [api],
         data(){
             return{
                 searchOnGoing: false,
                 armario: {},
+                idCurso:parseInt(this.$route.params.id_curso),
                
             };
         },
         methods:{
             devolverArmario(id_armario, id_aluno){                
                     this.post(`/curso/armarios/devolver/${id_armario}`,{id_armario: id_armario, id_aluno:id_aluno  });
-                    this.$router.push("/curso/armarios/"+this.$route.params.id_curso+"/"+id_armario);
+                    this.$router.push("/curso/armarios/"+this.$route.params.id_curso);
                 },
             },
         

@@ -36,8 +36,8 @@
 header{
     display:flex;
     width:100vw;
-    height:12vh;
-    background-color:#999;
+    height:9vh;
+    background-color:#FFFAFA;
     border-bottom:2px solid #2062AD; 
     border-top:2px solid #FFD700;
     padding:1vh;
@@ -54,7 +54,7 @@ header{
  }
 
  #logo img{
-    height:8vh;
+    height:7vh;
 
  }
 
