@@ -9,6 +9,12 @@ import CursosDetalhes from './components/curso/AppCursosDetalhes.vue';
 import ArmariosCurso from './components/armarios/AppArmariosCurso.vue';
 import ArmariosCursoDetalhes from './components/armarios/AppArmariosCursoDetalhes.vue';
 import Alunos from './components/alunos/AppAlunos.vue';
+import Biblioteca from './components/biblioteca/AppBiblioteca.vue';
+import BibliotecaDetalhes from './components/biblioteca/AppBibliotecaDetalhes.vue';
+import BibliotecaPesquisa from './components/biblioteca/AppBibliotecaPesquisa';
+import BibliotecaGenero from './components/biblioteca/bibliotecaria/AppBibliotecaGenero';
+import BibliotecaEditora from './components/biblioteca/AppBibliotecaEditora';
+import BibliotecaAutor from './components/biblioteca/bibliotecaria/AppBibliotecaAutor';
 
 Vue.use(Router);
 
@@ -22,6 +28,13 @@ const routes = [
     { path: '/curso/armarios/:id_curso', name: 'armariosCurso', component: ArmariosCurso },
     { path: '/curso/armario/:id_curso/:id_armario', name: 'armariosCursoDetalhes', component: ArmariosCursoDetalhes},
     { path: '/alunos', name: 'alunos', component: Alunos },
+    { path: '/biblioteca', name: 'biblioteca', component: Biblioteca },
+    { path: '/biblioteca/obra/:id_obra', name: 'bibliotecaDetalhes', component: BibliotecaDetalhes },
+    { path: '/biblioteca/obras/:search', name: 'bibliotecaPesquisa', component: BibliotecaPesquisa },
+    { path: '/biblioteca/obras/', name: 'bibliotecaPesquisaNull', component: BibliotecaPesquisa },
+    { path: '/biblioteca/genero', name: 'bibliotecaGenero', component: BibliotecaGenero },
+    { path: '/biblioteca/editora', name: 'bibliotecaEditora', component: BibliotecaEditora },
+    { path: '/biblioteca/autor', name: 'bibliotecaAutor', component: BibliotecaAutor },
 ];
 
 export default new Router({

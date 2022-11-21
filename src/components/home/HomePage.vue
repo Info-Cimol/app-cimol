@@ -50,6 +50,8 @@
                 this.turmas();
               } else if (action === "logout") {
                 this.logout();
+              } else if (action === "biblioteca") {
+                this.biblioteca();
               }
               this.$store.commit('setShowNav', false);
               
@@ -75,21 +77,24 @@
             },
             patimonios() {
                 this.$router.push('/patrimonios');
+            },
+            biblioteca() {
+                this.$router.push('/biblioteca');
             }
         },
             data() {
                 let perfil=this.$store.state.perfil;
                 let itens=new Array();
-               
+                itens.push({ text: 'Biblioteca', icon: 'mdi-book',  action:'biblioteca', perfil:'admin, biblioteca'});
                 if(perfil=='admin'){
                     itens.push({ text: 'Cursos', icon: 'mdi-school', action:'cursos'});
                     itens.push({ text: 'Turmas', icon: 'mdi-star', action:'turmas'});
-                }else if(perfil=='admin' || perfil=='coordenador' ){
+                }if(perfil=='admin' || perfil=='coordenador' ){
                     itens.push({ text: 'Alunos', icon: 'mdi-account-multiple' , action:'alunos'});
                     itens.push({ text: 'Armarios', icon: 'mdi-equal-box',  action:'armarios'});
                     itens.push({ text: 'Patrimônios', icon: 'mdi-equal-box',  action:'patrimonios'});
                      itens.push({ text: 'Horarios', icon: 'mdi-border-all',  action:'horarios'});
-                }else if(perfil=='admin' || perfil=='coordenador' || perfil=='professor' || perfil=='aluno'){
+                }if(perfil=='admin' || perfil=='coordenador' || perfil=='professor' || perfil=='aluno'){
                     itens.push({ text: 'Horarios', icon: 'mdi-border-all',  action:'horarios'});
                 }
                 return {
