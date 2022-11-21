@@ -21,8 +21,12 @@
                         <v-list-item-subtitle>{{armario.local}}</v-list-item-subtitle>
                          <hr/>
                         <div v-if="armario.locado>0">
-                            Dados do aluno
+                            <h3>Nome do Aluno</h3>
                             <p>{{armario.aluno.nome}}</p>
+                            <h3>Locado em</h3>
+                            <p>{{armario.dataLocacao}}</p>
+                            <h3>Devolver em</h3>
+                            <p>{{armario.dataPrevDevolucao}}</p>
                         </div>
                         
                         <v-card-actions>
@@ -71,7 +75,7 @@
         created(){
             //let sql=`/curso/armarios/${this.$route.params.id_armario}`;
             this.get(`/curso/armarios/busca/${this.$route.params.id_armario}`).then((response)=>{
-                
+                console.log(response.data[0]);
                              
                 this.armario = response.data[0];
             });
