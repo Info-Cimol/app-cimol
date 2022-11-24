@@ -22,27 +22,31 @@
                 <v-col class="d-flex flex-wrap">
                     <v-card v-for="obra in obras" :key="obra.id_obra" :cols="obra.titulo" class="mb-4 mr-4"
                         max-width="250">
-                        <v-img :src="obra.img" height="200px"></v-img>
+                        <v-img :src="obra.img" height="200px">
+                                <v-chip style="position: absolute; left: 0" v-if="obra.situacao == 'disponivel'"
+                                    class="ma-2" color="green" label text-color="white">
+                                    <v-icon left>
+                                        mdi-check-circle
+                                    </v-icon>
+                                    Disponível
+                                </v-chip>
+                                <v-chip style="position: absolute; left: 0" v-if="obra.situacao == 'indisponivel'"
+                                    class="ma-2" color="red" label text-color="white">
+                                    <v-icon left>
+                                        mdi-close-circle
+                                    </v-icon>
+                                    Indisponível
+                                </v-chip>
+                                <button-editar :idObra="obra.id_obra" style="position: absolute; left: 0; top: 40px"/>  
+                            </v-img>
 
-                        <v-card-title v-text="obra.titulo"></v-card-title>
-
-                        <v-card-subtitle v-text="obra.titulo"></v-card-subtitle>
-
-                        <v-chip v-if="obra.situacao == 'disponivel'" class="ma-2" color="green" label
-                            text-color="white">
-                            <v-icon left>
-                                mdi-check-circle
-                            </v-icon>
-                            Disponível
-                        </v-chip>
-                        <v-chip v-if="obra.situacao == 'indisponivel'" class="ma-2" color="red" label
-                            text-color="white">
-                            <v-icon left>
-                                mdi-close-circle
-                            </v-icon>
-                            Indisponível
-                        </v-chip>
-                        <v-btn text @click="detalhesObra(obra.id_obra)">Ver mais</v-btn>
+                            <div style="height: 70px">
+                                <h4 style="max-height: 50px" class="mx-2 mt-2 font-weight-medium overflow-hidden">{{obra.titulo}}</h4>
+                                <h4 class="mx-2 mt-1 font-weight-light">{{obra.autor}}</h4>
+                            </div>
+                            <v-row class="mt-1 justify-center">
+                                <v-btn class="ma-2 mb-4" text @click="detalhesObra(obra.id_obra)">Ver mais</v-btn>
+                            </v-row>
                     </v-card>
 
                 </v-col>
@@ -52,12 +56,13 @@
 </template>
 <script>
 import api from '../api/api';
-import Buttons from '../biblioteca/menuComponent/ButtonsAGE.vue';
+import Buttons from './biblioComponents/ButtonsAGE.vue';
+import ButtonEditar from './biblioComponents/ButtonEditar.vue';
 
 export default {
 
     name: 'AppBibliotecaPesquisa',
-    components: { Buttons },
+    components: { Buttons, ButtonEditar },
     mixins: [api],
     data() {
         return {

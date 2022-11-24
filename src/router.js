@@ -15,6 +15,7 @@ import BibliotecaPesquisa from './components/biblioteca/AppBibliotecaPesquisa';
 import BibliotecaGenero from './components/biblioteca/bibliotecaria/AppBibliotecaGenero';
 import BibliotecaEditora from './components/biblioteca/AppBibliotecaEditora';
 import BibliotecaAutor from './components/biblioteca/bibliotecaria/AppBibliotecaAutor';
+import BibliotecaRetiradas from './components/biblioteca/AppBibliotecaRetiradas';
 
 Vue.use(Router);
 
@@ -35,6 +36,7 @@ const routes = [
     { path: '/biblioteca/genero', name: 'bibliotecaGenero', component: BibliotecaGenero },
     { path: '/biblioteca/editora', name: 'bibliotecaEditora', component: BibliotecaEditora },
     { path: '/biblioteca/autor', name: 'bibliotecaAutor', component: BibliotecaAutor },
+    { path: '/biblioteca/retirada', name: 'bibliotecaRetirada', component: BibliotecaRetiradas },
 ];
 
 export default new Router({

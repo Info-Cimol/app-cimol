@@ -5,7 +5,7 @@
                 <h2 class="mb-2">
                     <v-btn @click="goBack()" icon class="mr-2">
                         <v-icon>mdi-arrow-left-bottom</v-icon>
-                    </v-btn>Editar Editoras
+                    </v-btn>Editar Tópicos
                 </h2>
             </div>
             <v-card>
@@ -14,20 +14,20 @@
                         <template v-slot:activator="{ on, attrs }">
                             <v-btn class="mr-4 mt-4 primary" dark v-bind="attrs" v-on="on">
                                 <v-icon class="mr-2">mdi-plus</v-icon>
-                                Nova Editora
+                                Novo Tópico
                             </v-btn>
                         </template>
                         <v-card>
                             <v-card-title>
-                                <span class="text-h5">Nova Editora</span>
+                                <span class="text-h5">Novo Tópico</span>
                             </v-card-title>
                             <v-divider></v-divider>
                             <v-card-text>
                                 <v-container>
                                     <v-row>
                                         <v-col cols="12">
-                                            <form @submit="criarEditora()">
-                                                <v-text-field autofocus v-model="novaEditora" label="Nome Editora">
+                                            <form @submit="criarGenero()">
+                                                <v-text-field autofocus v-model="novaGenero" label="Nome Genero">
                                                 </v-text-field>
                                             </form>
                                         </v-col>
@@ -40,7 +40,7 @@
                                 <v-btn color="blue darken-1" text @click="dialog = false">
                                     FECHAR
                                 </v-btn>
-                                <v-btn color="blue darken-1" text @click="criarEditora()">
+                                <v-btn color="blue darken-1" text @click="criarGenero()">
                                     CRIAR
                                 </v-btn>
                             </v-card-actions>
@@ -52,7 +52,7 @@
 
                 </v-card-title>
 
-                <v-data-table :headers="headers" :items="editora" :search="search" :items-per-page="20"
+                <v-data-table :headers="headers" :items="genero" :search="search" :items-per-page="20"
                     :header-props="headerProps">
                     <template v-slot:item.acao="{ item }">
                         <v-btn small class="mr-2" @click="editItem(item)">
@@ -73,15 +73,15 @@
                 <v-dialog v-model="dialogEdit" max-width="600px">
                     <v-card>
                         <v-card-title>
-                            <span class="text-h5">Editar Editora</span>
+                            <span class="text-h5">Editar Tópico</span>
                         </v-card-title>
                         <v-divider></v-divider>
                         <v-card-text>
                             <v-container>
                                 <v-row>
                                     <v-col cols="12">
-                                        <form @submit="salvarEditora()">
-                                            <v-text-field autofocus v-model="editarEditora" label="Nome Editora">
+                                        <form @submit="salvarGenero()">
+                                            <v-text-field autofocus v-model="editarGenero" label="Nome Genero">
                                             </v-text-field>
                                         </form>
                                     </v-col>
@@ -94,7 +94,7 @@
                             <v-btn color="blue darken-1" text @click="dialogEdit = false">
                                 FECHAR
                             </v-btn>
-                            <v-btn color="blue darken-1" text @click="salvarEditora()">
+                            <v-btn color="blue darken-1" text @click="salvarGenero()">
                                 SALVAR
                             </v-btn>
                         </v-card-actions>
@@ -103,12 +103,12 @@
 
                 <v-dialog v-model="dialogDelete" max-width="450px">
                     <v-card>
-                        <v-card-title>Tem certeza que quer apagar essa Editora?</v-card-title>
+                        <v-card-title>Tem certeza que quer apagar esse Tópico?</v-card-title>
                         <v-divider></v-divider>
                         <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn color="blue darken-1" text @click="dialogDelete = false">Cancelar</v-btn>
-                            <v-btn color="blue darken-1" text @click="deletarEditora">Sim</v-btn>
+                            <v-btn color="blue darken-1" text @click="deletarGenero">Sim</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
@@ -130,95 +130,96 @@
 <script>
 import api from '../api/api';
 export default {
-    name: 'AppBibliotecaEditora',
+    name: 'AppBibliotecaGenero',
     mixins: [api],
     data() {
         return {
             search: '',
             headers: [
-                { text: 'ID', value: 'id_editora' },
+                { text: 'ID', value: 'id_genero' },
                 { text: 'Nome', value: 'nome' },
                 { text: 'Ações', value: 'acao', sortable: false },
             ],
-            editora: [{ id_editora: "", nome: "", apagar: "" }],
+            genero: [{ id_genero: "", nome: "", apagar: "" }],
             dialog: false,
             dialogDelete: false,
             dialogEdit: false,
-            novaEditora: "",
-            editoraExiste: false,
-            editarEditora: "",
+            novaGenero: "",
+            editarGenero: "",
             headerProps: {
                 sortByText: "Filtrar por..."
             },
             itemDelete: {},
             itemEdit: {},
+            generoExiste: false,
         }
     },
     created() {
-        this.get('/biblioteca/editora').then((response) => {
+        this.get('/biblioteca/genero').then((response) => {
             console.log(response.data)
-            this.editora = response.data
+            this.genero = response.data
         })
     },
     methods: {
         goBack() {
             this.$router.push("/biblioteca");
         },
-        criarEditora() {
-            if (this.novaEditora) {
-                this.editora.forEach(el => {
-                    if (el.nome.toLowerCase() == this.novaEditora.toLowerCase()) {
-                        this.editoraExiste = true;
+        criarGenero() {
+            if (this.novaGenero) {
+                this.genero.forEach(el => {
+                    if (el.nome.toLowerCase() == this.novaGenero.toLowerCase()) {
+                        this.generoExiste = true
                     }
                 })
-                if (this.editoraExiste == false) {
-                    this.post(`/biblioteca/editora`, { nome: this.novaEditora }).then((response) => {
-                        this.get('/biblioteca/editora').then((response) => {
+                if (this.generoExiste == false) {
+                    this.post(`/biblioteca/genero`, { nome: this.novaGenero }).then((response) => {
+                        this.get('/biblioteca/genero').then((response) => {
                             console.log(response.data)
-                            this.editora = response.data
+                            this.genero = response.data
                         })
                         this.dialog = false
-                        this.novaEditora = ""
-                        this.editoraExiste = false
+                        this.novaGenero = ""
+                        this.generoExiste = false
+
                     })
                 } else {
-                    this.$store.commit('showErrorMessage', 'Essa Editora já existe')
-                    this.editoraExiste = false
+                    this.$store.commit('showErrorMessage', 'Essa Genero já existe')
+                    this.generoExiste = false
                 }
 
             } else {
-                this.$store.commit('showErrorMessage', 'Você deve informar algo no campo Editora')
+                this.$store.commit('showErrorMessage', 'Você deve informar algo no campo Genero')
             }
         },
-        deletarEditora() {
-            this.delete(`/biblioteca/editora/${this.itemDelete.id_editora}`).then((response) => {
+        deletarGenero() {
+            this.delete(`/biblioteca/genero/${this.itemDelete.id_genero}`).then((response) => {
                 console.log(response);
-                this.get('/biblioteca/editora').then((response) => {
+                this.get('/biblioteca/genero').then((response) => {
                     console.log(response.data)
-                    this.editora = response.data
+                    this.genero = response.data
                 })
                 this.dialogDelete = false
                 this.itemDelete = {}
             })
         },
-        salvarEditora() {
-            if (this.editarEditora) {
-                this.put(`/biblioteca/editora/${this.itemEdit.id_editora}`, { nome: this.editarEditora }).then((response) => {
-                    this.get('/biblioteca/editora').then((response) => {
+        salvarGenero() {
+            if (this.editarGenero) {
+                this.put(`/biblioteca/genero/${this.itemEdit.id_genero}`, { nome: this.editarGenero }).then((response) => {
+                    this.get('/biblioteca/genero').then((response) => {
                         console.log(response.data)
-                        this.editora = response.data
+                        this.genero = response.data
                     })
                     this.dialogEdit = false
-                    this.editarEditora = ""
+                    this.editarGenero = ""
                 })
             } else {
-                this.$store.commit('showErrorMessage', 'Você deve informar algo no campo Editora')
+                this.$store.commit('showErrorMessage', 'Você deve informar algo no campo Genero')
             }
         },
         editItem(item) {
             this.dialogEdit = true
             this.itemEdit = item
-            this.editarEditora = this.itemEdit.nome
+            this.editarGenero = this.itemEdit.nome
         },
 
         deleteItem(item) {
