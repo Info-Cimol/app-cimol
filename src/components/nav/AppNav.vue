@@ -70,6 +70,8 @@
                 this.biblioteca();
               } else if (action === "logout") {
                 this.logout();
+              } else if (action === "patrimonios") {
+                this.patrimonios();
               }
               this.$store.commit('setShowNav', false);
               
@@ -96,8 +98,8 @@
             turmas() {
                 this.$router.push('/turmas');
             },
-            patimonios() {
-                this.$router.push('/patrimonios');
+            patrimonios() {
+                this.$router.push('/patrimonio');
             },
             biblioteca() {
                 this.$router.push('/biblioteca');

@@ -7,17 +7,11 @@ import SetPerfilPage from './components/login/SetPerfilPage.vue';
 import Cursos from './components/curso/AppCursos.vue';
 import CursosDetalhes from './components/curso/AppCursosDetalhes.vue';
 import ArmariosCurso from './components/armarios/AppArmariosCurso.vue';
-import ArmariosCursoDetalhes from './components/armarios/AppArmariosCursoDetalhes.vue';
-import Alunos from './components/alunos/AppAlunos.vue';
-import Biblioteca from './components/biblioteca/AppBiblioteca.vue';
-import BibliotecaDetalhes from './components/biblioteca/AppBibliotecaDetalhes.vue';
-import BibliotecaPesquisa from './components/biblioteca/AppBibliotecaPesquisa';
-import BibliotecaGenero from './components/biblioteca/bibliotecaria/AppBibliotecaGenero';
-import BibliotecaEditora from './components/biblioteca/AppBibliotecaEditora';
-import BibliotecaAutor from './components/biblioteca/bibliotecaria/AppBibliotecaAutor';
-import BibliotecaRetiradas from './components/biblioteca/AppBibliotecaRetiradas';
+import Movimento from './components/patrimonios/AppPatrimoniosMovimento.vue';
+import Patrimonios from './components/patrimonios/AppPatrimonios.vue';
 
 Vue.use(Router);
+
 
 const routes = [
     { path: '/', name: 'home', component: HomePage },
@@ -27,19 +21,10 @@ const routes = [
     { path: '/cursos', name: 'cursos', component: Cursos },
     { path: '/curso/:id_curso', name: 'cursosDetalhes', component: CursosDetalhes },
     { path: '/curso/armarios/:id_curso', name: 'armariosCurso', component: ArmariosCurso },
-    { path: '/curso/armario/:id_curso/:id_armario', name: 'armariosCursoDetalhes', component: ArmariosCursoDetalhes},
-    { path: '/alunos', name: 'alunos', component: Alunos },
-    { path: '/biblioteca', name: 'biblioteca', component: Biblioteca },
-    { path: '/biblioteca/obra/:id_obra', name: 'bibliotecaDetalhes', component: BibliotecaDetalhes },
-    { path: '/biblioteca/obras/:search', name: 'bibliotecaPesquisa', component: BibliotecaPesquisa },
-    { path: '/biblioteca/obras/', name: 'bibliotecaPesquisaNull', component: BibliotecaPesquisa },
-    { path: '/biblioteca/genero', name: 'bibliotecaGenero', component: BibliotecaGenero },
-    { path: '/biblioteca/editora', name: 'bibliotecaEditora', component: BibliotecaEditora },
-    { path: '/biblioteca/autor', name: 'bibliotecaAutor', component: BibliotecaAutor },
-    { path: '/biblioteca/retirada', name: 'bibliotecaRetirada', component: BibliotecaRetiradas },
+    { path: '/patrimonio', name: 'patrimonios', component: Patrimonios },
+    { path: '/patrimonios/movimentos', name: 'movimentos', component: Movimento },
 ];
 
 export default new Router({
     routes,
 });
-
