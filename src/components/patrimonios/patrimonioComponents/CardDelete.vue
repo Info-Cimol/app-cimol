@@ -26,6 +26,8 @@
 import api from "../api/api";
 import axiosInstance from "../api/axiosInstance";
 export default {
+    name: "CardDelete",
+    mixins: [api],
     data(){
         return {
             dialogDelete: false,

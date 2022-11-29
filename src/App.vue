@@ -8,9 +8,9 @@
                 <app-nav v-if="$store.state.logged"/>
             </nav>
             <main>
-                <v-content>
+                <v-main>
                     <router-view />
-                </v-content>
+                </v-main>
             </main>    
         </div>  
         <feedback />

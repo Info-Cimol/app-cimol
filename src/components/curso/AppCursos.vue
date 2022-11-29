@@ -42,7 +42,6 @@
         },
         created() {
                 this.get('/curso').then((response)=>{
-                console.log(response.data)
                 this.cursos = response.data;
             });
         },
@@ -52,6 +51,5 @@
             }
         }
     }
-    console.log(window.localStorage.perfil);
 
 </script>

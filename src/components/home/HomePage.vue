@@ -52,6 +52,8 @@
                 this.logout();
               } else if (action === "biblioteca") {
                 this.biblioteca();
+              } else if (action === "patrimonios") {
+                this.patrimonios();
               }
               this.$store.commit('setShowNav', false);
               
@@ -75,7 +77,7 @@
             turmas() {
                 this.$router.push('/turmas');
             },
-            patimonios() {
+            patrimonios() {
                 this.$router.push('/patrimonios');
             },
             biblioteca() {
@@ -93,7 +95,7 @@
                 if(perfil=='admin' || perfil=='coordenador' ){
                     itens.push({ text: 'Alunos', icon: 'mdi-account-multiple' , action:'alunos'});
                     itens.push({ text: 'Armarios', icon: 'mdi-equal-box',  action:'armarios'});
-                    itens.push({ text: 'Patrimônios', icon: 'mdi-equal-box',  action:'patrimonios'});
+                    itens.push({ text: 'Patrimônios', icon: 'mdi-bank',  action:'patrimonios'});
                      itens.push({ text: 'Horarios', icon: 'mdi-border-all',  action:'horarios'});
                 }
                 if(perfil=='admin' || perfil=='coordenador' || perfil=='professor' || perfil=='aluno'){

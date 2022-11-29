@@ -5,6 +5,13 @@
                 <v-toolbar flat>
                     <v-toolbar-title>Patrimônios</v-toolbar-title>
                     <v-divider class="mx-4" inset vertical />
+                    <v-text-field
+                        v-model="textSearch"
+                        append-icon="mdi-magnify"
+                        label="Pesquisar"
+                        @change="doSearch()"
+                        single-line
+                        hide-details />
                     <v-row align="center">
                     </v-row>
                     <v-spacer />
@@ -85,8 +92,8 @@
                             </div>
                         </template>
                     </v-data-table>
-
-                    <CardMovimenta />
+                    <CardDelete />
+                    <!--<CardMovimenta />-->
                     <!--v-dialog v-model="dialogMoviment" max-width="700px">
                         <v-card>
                             <template v-slot:activator="{ on }">
@@ -176,6 +183,7 @@ export default {
             regra: [
                 v => !!v || "Campo obrigatório",
             ],
+            textSearch: '',
             tiposMovimentacao: [
                 { text: "Realocação", value: "1" },
                 { text: "Descarte", value: "2" },
@@ -268,6 +276,18 @@ export default {
                     console.log(err);
                 });
         },*/
+        doSearch(){
+            if(this.textSearch){
+                this.get(`/curso/patrimonio/buscar/${this.textSearch}`)
+            .then((res) => {
+                this.carrega();
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+
+            }
+        },
         showEditDialog(item) {
             this.editedItem = item || {};
             this.dialog = !this.dialog;
@@ -335,10 +355,11 @@ export default {
                 });
         },
         filtraCurso() {
-            axiosInstance
+            this.items = [];
+            this
                 .get(`/curso/patrimonio/lista/${item.id_curso}`)
                 .then((response) => {
-                    this.cursos = response.data;
+                    this.items = response.data;
                     this.carrega();
                 })
                 .catch((error) => {

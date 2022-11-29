@@ -99,7 +99,7 @@
                 this.$router.push('/turmas');
             },
             patrimonios() {
-                this.$router.push('/patrimonio');
+                this.$router.push('/patrimonios');
             },
             biblioteca() {
                 this.$router.push('/biblioteca');
@@ -127,7 +127,7 @@
       }if(perfil=='admin' || perfil=='coordenador' ){
         itens.push({ text: 'Alunos', icon: 'mdi-account-multiple' , action:'alunos'});
         itens.push({ text: 'Armarios', icon: 'mdi-equal-box',  action:'armarios'});
-        itens.push({ text: 'Patrimônios', icon: 'mdi-equal-box',  action:'patrimonios'});
+        itens.push({ text: 'Patrimônios', icon: 'mdi-bank',  action:'patrimonios'});
       }if(perfil=='admin' || perfil=='coordenador' || perfil=='professor' || perfil=='aluno'){
         itens.push({ text: 'Horarios', icon: 'mdi-border-all',  action:'horarios'});
       }
