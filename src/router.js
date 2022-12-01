@@ -9,6 +9,8 @@ import CursosDetalhes from './components/curso/AppCursosDetalhes.vue';
 import ArmariosCurso from './components/armarios/AppArmariosCurso.vue';
 import Movimento from './components/patrimonios/AppPatrimoniosMovimento.vue';
 import Patrimonios from './components/patrimonios/AppPatrimonios.vue';
+import Movimentar from './components/patrimonios/AppPatrimoniosMovimentar.vue'
+import Deletar from './components/patrimonios/AppPatrimoniosDelete.vue'
 
 Vue.use(Router);
 
@@ -23,6 +25,8 @@ const routes = [
     { path: '/curso/armarios/:id_curso', name: 'armariosCurso', component: ArmariosCurso },
     { path: '/patrimonios', name: 'patrimonios', component: Patrimonios },
     { path: '/patrimonios/movimentos', name: 'movimentos', component: Movimento },
+    { path: '/patrimonios/movimentar', name: 'movimentar', component: Movimentar },
+    { path: '/patrimonios/delete/:idPatrimonio', name: 'deletar', component: Deletar },
 ];
 
 export default new Router({
