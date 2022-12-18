@@ -15,7 +15,7 @@
                     />
                     <v-row align="center"> </v-row>
                     <v-spacer />
-                    <v-dialog v-model="dialog" max-width="600px">
+                    <v-dialog v-model="dialog" max-width="800px">
                         <template v-slot:activator="{ on }">
                             <div class="d-flex">
                                 <v-btn color="cyan" dark class="ml-auto ma-3" v-on="on">
@@ -56,7 +56,7 @@
                                             label="Nota Fiscal"
                                         />
                                     </v-col>
-                                    <v-col cols="11" sm="4" md="4">
+                                    <v-col cols="11" sm="4" md="3">
                                         <v-file-input
                                             v-model="editedItem.imagePath"
                                             label="Imagem"
@@ -64,13 +64,22 @@
                                             @change="upaImagem"
                                         />
                                     </v-col>
-                                    <v-col cols="11" sm="4" md="4">
+                                    <v-col cols="11" sm="4" md="3">
                                         <v-text-field v-model="editedItem.local" label="Local" />
                                     </v-col>
-                                    <v-col cols="11" sm="4" md="4">
+                                    <v-col cols="11" sm="4" md="3">
                                         <v-text-field
                                             v-model="editedItem.codigo_barra"
                                             label="Cod Barra"
+                                        />
+                                    </v-col>
+                                    <v-col cols="11" sm="4" md="3">
+                                        <v-select
+                                            v-model="editedItem.categoria"
+                                            :items="categoriaPat"
+                                            item-text="nome"
+                                            item-value="id_categoria"
+                                            label="Categoria"
                                         />
                                     </v-col>
                                 </v-row>
@@ -150,7 +159,7 @@
                             </v-card-actions>
                         </v-card>
                     </v-dialog>
-                    <v-dialog v-model="dialogMoviment" max-width="700px">
+                    <v-dialog v-model="dialogMoviment" max-width="800px">
                         <v-card>
                             <template v-slot:activator="{ on }">
                                 <div class="d-flex" v-on="on"></div>
@@ -158,14 +167,15 @@
                             <v-card-title> <span class="headline">Movimentar</span></v-card-title>
                             <v-card-text>
                                 <v-row>
-                                    <v-col cols="10" sm="6" md="3">
-                                        <v-text-field
-                                            v-model="itemToMoviment.descricao"
+                                    <v-col cols="10" sm="6" md="4">
+                                        <v-textarea
+                                            v-model="itemToMoviment.desc"
                                             :rules="regra"
                                             label="Descrição"
+                                            rows="2"
                                         />
                                     </v-col>
-                                    <v-col cols="10" sm="6" md="3">
+                                    <v-col cols="10" sm="6" md="4">
                                         <v-menu
                                             ref="menu1"
                                             v-model="menu1"
@@ -176,35 +186,44 @@
                                             <template v-slot:activator="{ on, attrs }">
                                                 <v-text-field
                                                     v-model="dateFormatted"
-                                                    readonly
                                                     label="Data"
                                                     persistent-hint
+                                                    readonly
                                                     v-bind="attrs"
                                                     @blur="date = parseDate(dateFormatted)"
                                                     v-on="on"
-                                                >
-                                                </v-text-field>
+                                                />
                                             </template>
                                             <v-date-picker
                                                 v-model="date"
-                                                no-title
+                                                locale="pt-br"
                                                 @input="menu1 = false"
-                                            >
-                                            </v-date-picker>
+                                            />
                                         </v-menu>
                                     </v-col>
-                                    <v-col cols="10" sm="6" md="3">
+                                    <v-col cols="10" sm="6" md="4">
                                         <v-select
-                                            v-model="
-                                                itemToMoviment.patrimonio_tipo_movimento_id_patrimonio_tipo_movimento
-                                            "
+                                            v-model="itemToMoviment.id_patrimonio_tipo_movimento"
                                             :items="tiposMovimentacao"
+                                            item-text="nome"
+                                            item-value="nome"
                                             label="Tipo Movimentação"
                                             :rules="regra"
                                         />
                                     </v-col>
-                                    <v-col cols="10" sm="4" md="3">
+                                    <v-col cols="10" sm="6" md="4">
+                                        <v-select
+                                            v-model="itemToMoviment.categoria"
+                                            :items="categoriaPat"
+                                            item-text="nome"
+                                            item-value="id_categoria"
+                                            label="Categoria"
+                                            :rules="regra"
+                                        />
+                                    </v-col>
+                                    <v-col cols="10" sm="4" md="4">
                                         <v-text-field
+                                            disabled
                                             v-model="itemToMoviment.id_patrimonio_item"
                                             :rules="regra"
                                             label="ID"
@@ -229,6 +248,7 @@
                         </v-card>
                     </v-dialog>
                 </v-card>
+                <v-btn color="accent" elevation="2" plain @click="mov()">Movimentos</v-btn>
             </v-main>
         </v-app>
     </v-container>
@@ -250,6 +270,7 @@ export default {
                 { text: "Número Patrimonio", value: "numero_patrimonio", sortable: false },
                 { text: "Local", value: "local", sortable: false },
                 { text: "Nota Fiscal", value: "item_nota_fiscal", sortable: false },
+                { text: "Categoria", value: "categoria", sortable: false },
                 { text: "Imagem", value: "imagem" },
                 { text: "Ações", value: "actions", sortable: false },
             ],
@@ -261,20 +282,21 @@ export default {
             dialogMoviment: false,
             itemToEdit: [],
             itemToMoviment: [],
-            date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString(),
-            dateFormatted: "",
+            date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+                .toISOString()
+                .substr(0, 10),
+            dateFormatted: this.formatDate(
+                new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+                    .toISOString()
+                    .substr(0, 10)
+            ),
             itemToDelete: [],
             imagePath: "",
             menu1: false,
             regra: [(v) => !!v || "Campo obrigatório"],
-            tiposMovimentacao: [
-                { text: "Realocação", value: "1" },
-                { text: "Descarte", value: "2" },
-                { text: "Manutenção", value: "3" },
-                { text: "Entrada", value: "4" },
-                { text: "Empréstimo", value: "5" },
-                { text: "Desmonte", value: "6" },
-            ],
+            tiposMovimentacao: [],
+            categoriaPat: [],
+            seleciona: null,
         };
     },
     computed: {
@@ -282,33 +304,19 @@ export default {
             return this.formatDate(this.date);
         },
     },
-    mounted(){
-        this.carrega();
-    },
     watch: {
-        dialog(val) {
-            val || this.close();
-        },
-        dialogDelete(val) {
-            val || this.closeDelete();
-        },
         date(val) {
             this.dateFormatted = this.formatDate(this.date);
         },
     },
+    async mounted() {
+        this.carrega();
+        this.categoriaPatrimonio();
+        await this.carregaTipoMov();
+    },
     methods: {
-       /* doSearch() {
-            (this.items = []),
-                this.get(`/curso/patrimonio/buscar/${this.textSearch}`).then((response) => {
-                    console.log(response);
-                    this.items = response.data;
-                    this.carrega();
-                });
-        },*/
         deleta(item) {
-            const url = `/curso/patrimonio/remover/${item.id_patrimonio_item}`;
-            axiosInstance
-                .delete(url)
+            this.delete(`/curso/patrimonio/remover/patrimonio/${item.id_patrimonio_item}`)
                 .then((res) => {
                     this.carrega();
                     this.dialogDelete = false;
@@ -322,18 +330,17 @@ export default {
                 ...item,
                 imagem: imagePath,
             };
-            axiosInstance
-                .patch(`/curso/patrimonio/alterar/${item.id_patrimonio_item}`, data)
+            this.patch(`/curso/patrimonio/alterar/${item.id_patrimonio_item}`, data)
                 .then((res) => {
                     this.carrega();
                     this.dialog = false;
+                    this.editeditem = [];
                 })
                 .catch((err) => {
                     console.log(err);
                 });
         },
         salvar(item, imagePath) {
-            console.log(item.id_patrimonio_item);
             const data = {
                 ...item,
                 imagem: imagePath,
@@ -341,8 +348,7 @@ export default {
             if (item.id_patrimonio_item) {
                 this.altera(item, imagePath);
             } else {
-                axiosInstance
-                    .post(`/curso/patrimonio/criarPatrimonio`, data)
+                this.post(`/curso/patrimonio/criarPatrimonio`, data)
                     .then((res) => {
                         this.carrega();
                         this.dialog = false;
@@ -352,15 +358,34 @@ export default {
                     });
             }
         },
+        categoriaPatrimonio() {
+            this.categoriaPat = [];
+            this.get(`/curso/patrimonio/categoria`)
+                .then((res) => {
+                    this.categoriaPat = res.data.patrimonio;
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
+        async carregaTipoMov() {
+            this.tiposMovimentacao = [];
+            try {
+                const tipos = await this.get(`/curso/patrimonio/tipoMov`);
+                this.tiposMovimentacao = tipos.data.patrimonio;
+            } catch (error) {
+                console.log(error);
+            }
+        },
         movimenta(item) {
             const data = {
                 ...item,
-                date: this.dateFormatted,
+                date: this.date,
             };
-            axiosInstance
-                .post(`/curso/patrimonio/movimentacao/${item.id_patrimonio_item}`, data)
+            console.log(data);
+            this.post(`/curso/patrimonio/movimentacao/${item.id_patrimonio_item}`, data)
                 .then((res) => {
-                    this.carregaMov();
+                    this.$router.push(`/patrimonios/movimentos`)
                     this.dialogMoviment = false;
                 })
                 .catch((err) => {
@@ -397,42 +422,25 @@ export default {
                     console.log(err);
                 });
         },
-        filtraCurso() {
-            axiosInstance
-                .get(`/curso/patrimonio/lista/${item.id_curso}`)
-                .then((response) => {
-                    this.cursos = response.data;
-                    this.carrega();
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        },
-        movimentos() {
-            this.$router.push(`/patrimonios/movimentos`);
-        },
         carrega() {
             this.items = [];
             if (this.textSearch) {
                 this.get(`/curso/patrimonio/buscar/${this.textSearch}`).then((response) => {
-                    console.log(response);
                     this.items = response.data.patrimonio;
                 });
-            }else{
-            this
-                .get("/curso/patrimonio/lista")
-                .then((response) => {
-                    this.items = response.data;
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+            } else {
+                this.get("/curso/patrimonio/lista")
+                    .then((response) => {
+                        this.items = response.data;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
             }
         },
         carregaMov() {
             this.items = [];
-            axiosInstance
-                .get("/curso/patrimonio/movimentacao")
+            this.get("/curso/patrimonio/movimentacao")
                 .then((response) => {
                     this.items = response.data;
                 })
@@ -450,9 +458,9 @@ export default {
             const [month, day, year] = date;
             return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
         },
-    },
-    configuration: {
-        cloudName: "drkpkbqdo",
+        mov(){
+            this.$router.push(`/patrimonios/movimentos`)
+        }
     },
 };
 </script>

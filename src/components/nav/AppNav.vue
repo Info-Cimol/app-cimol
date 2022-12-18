@@ -101,7 +101,7 @@
                 this.$router.push('/turmas');
             },
             patrimonios() {
-                this.$router.push('/patrimonio').catch(()=>{});
+                this.$router.push('/patrimonios').catch(()=>{});
             },
             biblioteca() {
                 this.$router.push('/biblioteca');

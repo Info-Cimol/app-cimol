@@ -9,6 +9,7 @@ import CursosDetalhes from './components/curso/AppCursosDetalhes.vue';
 import ArmariosCurso from './components/armarios/AppArmariosCurso.vue';
 import Movimento from './components/patrimonios/AppPatrimoniosMovimento.vue';
 import Patrimonios from './components/patrimonios/AppPatrimonios.vue';
+import Historico from './components/patrimonios/AppPatrimoniosHistorico.vue'
 
 Vue.use(Router);
 
@@ -23,6 +24,7 @@ const routes = [
     { path: '/curso/armarios/:id_curso', name: 'armariosCurso', component: ArmariosCurso },
     { path: '/patrimonios', name: 'patrimonios', component: Patrimonios },
     { path: '/patrimonios/movimentos', name: 'movimentos', component: Movimento },
+    { path: '/patrimonios/historico/:idMovimento', name: 'historico', component: Historico },
 ];
 
 export default new Router({
